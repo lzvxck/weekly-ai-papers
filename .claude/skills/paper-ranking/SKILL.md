@@ -7,7 +7,24 @@ description: Criterio para elegir el top 3 de la semana entre los candidatos enc
 
 ## Anti-duplicados (obligatorio, primer paso)
 
-Antes de rankear nada, leer todos los archivos existentes en `papers/*.md` (todas las semanas previas) y armar la lista de papers ya incluidos (por link/arXiv ID, no por título — los títulos pueden variar entre versiones). Cualquier candidato de esta semana que ya aparezca en una semana anterior (top 3 o lista de "resto de candidatos") se descarta sin excepción, sin importar qué tan relevante sea. Si `papers/` no tiene archivos previos todavía, no hay nada que excluir.
+`papers/seen.md` es el índice acumulativo de todo lo ya publicado y la **única** fuente del chequeo — no hace falta leer los archivos semanales viejos, que crecen sin límite.
+
+**Normalización de IDs**: comparar siempre por arXiv ID pelado, sin sufijo de versión — `2601.12345v2` y `2601.12345` son el mismo paper. Nunca comparar por título (cambian entre revisiones) ni por URL completa.
+
+Cualquier candidato cuyo ID normalizado ya figure en `seen.md` se descarta sin excepción, sin importar qué tan relevante sea o si la semana pasada solo estaba en "resto de candidatos". Si `seen.md` no existe todavía (primera corrida), no hay nada que excluir.
+
+### Formato de `papers/seen.md`
+
+Una línea por paper, agregada al final. Se actualiza en la misma corrida que escribe el archivo semanal — si se saltea, el anti-duplicados de la semana siguiente queda ciego.
+
+```markdown
+# Papers ya publicados
+
+Índice acumulativo para el chequeo anti-duplicados. Una línea por paper, arXiv ID normalizado (sin versión). No borrar entradas.
+
+- `2601.12345` — 2026-07-27 — Título del paper
+- `2601.67890` — 2026-07-27 — Otro título
+```
 
 ## Criterio de ranking (para elegir el top 3)
 

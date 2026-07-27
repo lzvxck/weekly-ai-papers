@@ -11,13 +11,26 @@ El scan corre los lunes. Buscar papers publicados/actualizados en los **últimos
 
 ## arXiv (fuente principal)
 
-- Categorías relevantes: `cs.CL` (Computation and Language) y `cs.LG` (Machine Learning).
-- Usar el listado de recientes de arXiv o `WebSearch` con queries del tipo:
-  - `site:arxiv.org RLHF OR DPO OR GRPO OR "reward model" 2026`
-  - `site:arxiv.org "supervised fine-tuning" LLM new`
-  - `site:arxiv.org new open model architecture paper`
-- Para cada candidato, `WebFetch` la página del abstract (`arxiv.org/abs/<id>`) para confirmar fecha de submission y leer el abstract completo — no rankear solo con el snippet de búsqueda.
-- Construir 3-5 queries distintas cubriendo tanto post-training como arquitecturas (ver `config/topics.md`), no una sola query genérica.
+Categorías relevantes: `cs.CL` (Computation and Language) y `cs.LG` (Machine Learning).
+
+### Vía primaria: la API de arXiv
+
+Devuelve resultados estructurados con fecha exacta de submission — mucho más confiable para la ventana de 7 días que depender del índice de un buscador. `WebFetch` sobre:
+
+```
+http://export.arxiv.org/api/query?search_query=<QUERY>&sortBy=submittedDate&sortOrder=descending&max_results=40
+```
+
+Donde `<QUERY>` usa la sintaxis de arXiv (`cat:` para categoría, `abs:` para abstract, `AND`/`OR`, todo URL-encoded). Ejemplos:
+
+- Post-training: `cat:cs.CL AND (abs:RLHF OR abs:DPO OR abs:GRPO OR abs:"reward model" OR abs:"fine-tuning")`
+- Arquitecturas: `cat:cs.LG AND (abs:"mixture of experts" OR abs:attention OR abs:"long context" OR abs:architecture)`
+
+Construir 3-5 queries distintas cubriendo ambas categorías (ver `config/topics.md`), no una sola genérica. La respuesta trae título, abstract y `published`/`updated` — suficiente para el filtro inicial sin fetch adicional.
+
+### Vía fallback: WebSearch
+
+Si la API falla o devuelve poco, `WebSearch` con queries del tipo `site:arxiv.org RLHF OR DPO OR GRPO "reward model"`. Al usar esta vía, `WebFetch` la página del abstract (`arxiv.org/abs/<id>`) de cada candidato para confirmar la fecha de submission — los snippets del buscador no son confiables para recencia.
 
 ## Hugging Face Papers (fallback / señal secundaria)
 

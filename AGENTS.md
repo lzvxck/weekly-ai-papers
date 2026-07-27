@@ -12,14 +12,16 @@ Ver `config/topics.md` — es la fuente de verdad de qué buscar y qué queda fu
 
 ## Fuentes
 
-1. **arXiv** (principal) — `arxiv.org`, categorías cs.CL / cs.LG, búsqueda por keywords de `config/topics.md` y listados recientes.
+1. **arXiv** (principal) — API de arXiv (`export.arxiv.org/api/query`) sobre cs.CL / cs.LG, con WebSearch como fallback. Ver skill `arxiv-search`.
 2. **Hugging Face Papers** (secundaria / fallback) — `huggingface.co/papers`, útil cuando arXiv no alcanza para completar el ranking o para señal de trending de la semana.
 
 No se navega X/Twitter ni otras fuentes para esto — deliberadamente fuera de alcance por ahora.
 
 ## Subagente
 
-`paper-scout` (`.claude/agents/paper-scout.md`) — hace todo el trabajo: busca en arXiv y HF Papers, excluye papers ya publicados en `papers/` de semanas anteriores (anti-duplicados, obligatorio), filtra por relevancia según `config/topics.md`, rankea el top 3 de la semana, y escribe `papers/<YYYY-MM-DD>.md` (lunes de esa semana). No requiere Playwright — usa WebSearch/WebFetch.
+`paper-scout` (`.claude/agents/paper-scout.md`) — hace todo el trabajo: busca en arXiv y HF Papers, excluye papers ya publicados según `papers/seen.md` (anti-duplicados, obligatorio), filtra por relevancia según `config/topics.md`, rankea el top 3 de la semana, escribe `papers/<YYYY-MM-DD>.md` (lunes de esa semana) y agrega lo publicado a `papers/seen.md`. No requiere navegador — usa la API de arXiv vía WebFetch, más WebSearch como fallback.
+
+`papers/seen.md` es el índice acumulativo de arXiv IDs ya publicados — única fuente del anti-duplicados, para no releer todos los archivos semanales a medida que crecen. Formato en la skill `paper-ranking`.
 
 Post-training y arquitecturas tienen la misma prioridad — el top 3 debe incluir al menos 1-2 papers de arquitectura cuando haya candidatos sólidos esa semana, no solo por default cuando sobra volumen de post-training.
 
