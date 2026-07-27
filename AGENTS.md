@@ -19,7 +19,9 @@ No se navega X/Twitter ni otras fuentes para esto — deliberadamente fuera de a
 
 ## Subagente
 
-`paper-scout` (`.claude/agents/paper-scout.md`) — hace todo el trabajo: busca en arXiv y HF Papers, filtra por relevancia según `config/topics.md`, rankea el top 3 de la semana, y escribe `papers/<YYYY-MM-DD>.md` (lunes de esa semana). No requiere Playwright — usa WebSearch/WebFetch.
+`paper-scout` (`.claude/agents/paper-scout.md`) — hace todo el trabajo: busca en arXiv y HF Papers, excluye papers ya publicados en `papers/` de semanas anteriores (anti-duplicados, obligatorio), filtra por relevancia según `config/topics.md`, rankea el top 3 de la semana, y escribe `papers/<YYYY-MM-DD>.md` (lunes de esa semana). No requiere Playwright — usa WebSearch/WebFetch.
+
+Post-training y arquitecturas tienen la misma prioridad — el top 3 debe incluir al menos 1-2 papers de arquitectura cuando haya candidatos sólidos esa semana, no solo por default cuando sobra volumen de post-training.
 
 ## Formato de salida
 

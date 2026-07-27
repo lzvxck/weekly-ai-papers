@@ -2,7 +2,9 @@
 
 Fuente de verdad de qué cuenta como relevante para el ranking semanal. Editar este archivo cambia qué busca `paper-scout` — no hace falta tocar el subagente ni las skills.
 
-## Post-training (prioridad principal)
+Post-training y arquitecturas tienen **la misma prioridad** — no una es secundaria de la otra. El ranking semanal apunta a incluir ambas categorías cuando haya candidatos relevantes (ver criterio de mínimo por categoría en la skill `paper-ranking`).
+
+## Post-training
 
 Todo lo que ocurre después del pre-entrenamiento de un LLM:
 
@@ -14,7 +16,7 @@ Todo lo que ocurre después del pre-entrenamiento de un LLM:
 - Fine-tuning en general (LoRA, QLoRA, full fine-tune, etc.)
 - Alineación, safety tuning, red-teaming de modelos ya entrenados
 
-## Arquitecturas nuevas (prioridad secundaria)
+## Arquitecturas nuevas
 
 - Papers de modelos open-source nuevos y relevantes (ej. familias Kimi, DeepSeek, Qwen, Llama, Mistral) cuando el paper describe arquitectura/entrenamiento, no solo un release menor
 - Papers fundacionales de arquitectura (ej. "Attention Is All You Need", Mixture-of-Experts, state-space models) — incluir tanto releases nuevos como clásicos que valga la pena releer

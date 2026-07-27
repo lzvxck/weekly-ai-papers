@@ -1,20 +1,23 @@
 ---
 name: paper-ranking
-description: Criterio para elegir el top 3 de la semana entre los candidatos encontrados, y la plantilla markdown exacta del archivo semanal en papers/. Usar después de juntar candidatos con la skill arxiv-search, antes de escribir el archivo.
+description: Criterio para elegir el top 3 de la semana entre los candidatos encontrados (incluyendo el chequeo anti-duplicados contra semanas previas), y la plantilla markdown exacta del archivo semanal en papers/. Usar después de juntar candidatos con la skill arxiv-search, antes de escribir el archivo.
 ---
 
 # Ranking y formato del archivo semanal
 
+## Anti-duplicados (obligatorio, primer paso)
+
+Antes de rankear nada, leer todos los archivos existentes en `papers/*.md` (todas las semanas previas) y armar la lista de papers ya incluidos (por link/arXiv ID, no por título — los títulos pueden variar entre versiones). Cualquier candidato de esta semana que ya aparezca en una semana anterior (top 3 o lista de "resto de candidatos") se descarta sin excepción, sin importar qué tan relevante sea. Si `papers/` no tiene archivos previos todavía, no hay nada que excluir.
+
 ## Criterio de ranking (para elegir el top 3)
 
-Priorizar, en este orden:
+Post-training y arquitecturas tienen **la misma prioridad** — ver `config/topics.md`. El top 3 de la semana debe reflejar eso:
 
-1. **Relevancia directa** a post-training (RLHF, RLAIF, GRPO, DPO, PPO, RM, evals, SFT, fine-tuning) — es la prioridad principal del usuario.
-2. **Novedad real**: resultados o método nuevo, no una encuesta/survey de trabajo ya conocido, salvo que el survey sea excepcionalmente útil como mapa del área.
-3. **Arquitecturas nuevas** relevantes (modelos open-source nuevos, cambios estructurales al transformer) — prioridad secundaria pero puede desplazar un post-training paper si es un release mayor (ej. paper de una familia de modelos nueva tipo Kimi/DeepSeek/Qwen).
-4. **Señal externa** como desempate: upvotes en HF Papers, si el paper viene de un lab reconocido, si ya está generando discusión.
+1. Filtrar candidatos duplicados (paso anterior) y los que caen en "Fuera de alcance" de `config/topics.md`.
+2. Dentro de lo que queda, priorizar por: novedad real (resultado o método nuevo, no una encuesta de trabajo ya conocido salvo que sea excepcionalmente útil), y señal externa como desempate (upvotes en HF Papers, lab reconocido, discusión generada).
+3. **Balance obligatorio**: si hay candidatos sólidos de arquitectura esa semana, el top 3 debe incluir al menos 1, idealmente 2 — no dejar que post-training ocupe las 3 posiciones solo porque hay más volumen de papers en esa categoría. Si literalmente no hay ningún candidato de arquitectura relevante esa semana, el top 3 puede ser 100% post-training, pero eso debe ser porque no había opciones, no por default.
 
-Si hay menos de 3 candidatos sólidos en la semana, listar los que haya y decirlo explícitamente en el archivo — no rellenar con papers débiles solo para completar 3.
+Si hay menos de 3 candidatos sólidos en la semana (después de anti-duplicados y filtro de alcance), listar los que haya y decirlo explícitamente en el archivo — no rellenar con papers débiles ni con duplicados solo para completar 3.
 
 ## Plantilla del archivo semanal (`papers/YYYY-MM-DD.md`)
 
