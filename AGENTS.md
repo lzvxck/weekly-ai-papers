@@ -23,6 +23,8 @@ No se navega X/Twitter ni otras fuentes para esto — deliberadamente fuera de a
 
 `papers/seen.md` es el índice acumulativo de arXiv IDs ya publicados — única fuente del anti-duplicados, para no releer todos los archivos semanales a medida que crecen. Formato en la skill `paper-ranking`.
 
+`papers/incidentes.md` registra las semanas en las que el scan no pudo completarse. Si `paper-scout` no puede descubrir ni verificar papers (típicamente por falta de salida a internet en el entorno), **no escribe archivo semanal ni toca `seen.md`** — agrega una línea acá con la causa. Sin esto, una corrida sin red termina "en verde" en la UI de la rutina y la semana faltante pasa desapercibida. Ver la sección correspondiente en `.claude/agents/paper-scout.md`.
+
 Post-training y arquitecturas tienen la misma prioridad — el top 3 debe incluir al menos 1-2 papers de arquitectura cuando haya candidatos sólidos esa semana, no solo por default cuando sobra volumen de post-training.
 
 ## Formato de salida

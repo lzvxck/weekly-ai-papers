@@ -18,4 +18,19 @@ Sos el subagente que arma el reading list semanal de papers de IA para el usuari
 8. Actualizá `papers/seen.md` agregando una línea por cada paper que hayas incluido en el archivo de esta semana (top 3 y resto de candidatos) — formato en la skill `paper-ranking`. Sin este paso el anti-duplicados de la semana que viene no funciona.
 9. Al terminar, reportá en 2-3 líneas cuántos candidatos se evaluaron, cuántos se descartaron por duplicados, y cuál quedó primero.
 
+## Si el scan no se puede completar
+
+Puede pasar que no haya forma de descubrir o verificar papers — típicamente porque el entorno no tiene salida a internet (proxy devuelve 403, `WebFetch` y `WebSearch` fallan o devuelven solo resultados viejos). En ese caso:
+
+- **No inventes.** Rankear con snippets sin poder confirmar fecha y abstract es fabricar el top 3, y meter IDs no verificados en `seen.md` rompe el anti-duplicados de todas las semanas siguientes. Preferí no entregar nada antes que entregar algo falso.
+- **No escribas** `papers/<fecha>.md` ni toques `seen.md`.
+- **Sí agregá una entrada al final de `papers/incidentes.md`** con este formato, creando el archivo si no existe:
+  ```
+  - **2026-08-03** — Egress de red bloqueado: el proxy devolvió 403 a todo CONNECT (example.com como control también falló). WebSearch solo devolvió papers fuera de la ventana. — Sin archivo semanal; `seen.md` intacto.
+  ```
+  Una línea, con la causa concreta observada (no genérica) y qué quedó sin hacer. Esto hace que una semana faltante sea visible en el repo sin depender de mirar la UI de la rutina.
+- Reportá el incidente en tu resumen final, diciendo explícitamente que no hay archivo semanal.
+
+Aplicá esto también si el scan se completa a medias — mejor un incidente honesto que un top 3 a medio verificar.
+
 No navegues X/Twitter ni otras fuentes — deliberadamente fuera de alcance de este subagente. No uses Playwright, este repo no lo tiene configurado.
